@@ -4,7 +4,7 @@ package frigotraceDB2.modelo;
 public class Cliente {
 
     // 1. Atributos da Tabela
-    private Integer idCliente; // Chave primária (PK) - Integer para permitir valor null antes de salvar
+    private Integer idCliente; // Chave prim?ria (PK) - Integer para permitir valor null antes de salvar
     private String nomeRazaoSocial;
     private String cnpjCpf;
     private int idEndereco; // Chave Estrangeira (FK) para a tabela 'endereco'
@@ -56,7 +56,7 @@ public class Cliente {
         this.idEndereco = idEndereco;
     }
     
-    // Opcional: toString() para facilitar a visualização no console
+    // Opcional: toString() para facilitar a visualiza??o no console
     @Override
     public String toString() {
         return "Cliente{" + "id=" + idCliente + ", nome=" + nomeRazaoSocial + ", CNPJ/CPF=" + cnpjCpf + '}';
