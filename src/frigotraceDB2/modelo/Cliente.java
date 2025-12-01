@@ -4,25 +4,36 @@ package frigotraceDB2.modelo;
 public class Cliente {
 
     // 1. Atributos da Tabela
-    private Integer idCliente; // Chave prim?ria (PK) - Integer para permitir valor null antes de salvar
+    private Integer idCliente; // Chave primária (PK)
     private String nomeRazaoSocial;
     private String cnpjCpf;
-    private int idEndereco; // Chave Estrangeira (FK) para a tabela 'endereco'
+    
+    // [CORREÇÃO] O tipo foi mudado para Integer para permitir o valor 'null'
+    private Integer idEndereco; // Chave Estrangeira (FK) - Agora pode ser null
 
-    // 2. Construtor (Para criar um novo objeto antes de salvar no banco)
-    public Cliente(String nomeRazaoSocial, String cnpjCpf, int idEndereco) {
+    // 2. Construtores
+
+    // Construtor para NOVO cliente COM endereço (opcional)
+    public Cliente(String nomeRazaoSocial, String cnpjCpf, Integer idEndereco) {
         this.nomeRazaoSocial = nomeRazaoSocial;
         this.cnpjCpf = cnpjCpf;
         this.idEndereco = idEndereco;
     }
     
+    // [NOVO] Construtor para NOVO cliente SEM endereço (apenas campos obrigatórios)
+    public Cliente(String nomeRazaoSocial, String cnpjCpf) {
+        this.nomeRazaoSocial = nomeRazaoSocial;
+        this.cnpjCpf = cnpjCpf;
+        this.idEndereco = null; // Seta explicitamente como null
+    }
+
     // Opcional: Construtor vazio
     public Cliente() {
     }
 
-    // 3. Getters e Setters (Para acessar e modificar os atributos)
+    // 3. Getters e Setters
     
-    // Getter e Setter para o ID (Importante para o SELECT e UPDATE)
+    // Getter e Setter para o ID Cliente (PK)
     public Integer getIdCliente() {
         return idCliente;
     }
@@ -31,7 +42,7 @@ public class Cliente {
         this.idCliente = idCliente;
     }
     
-    // Getters e Setters para os demais atributos
+    // Getters e Setters para Nome e CNPJ/CPF
     public String getNomeRazaoSocial() {
         return nomeRazaoSocial;
     }
@@ -48,17 +59,18 @@ public class Cliente {
         this.cnpjCpf = cnpjCpf;
     }
 
-    public int getIdEndereco() {
+    // [CORREÇÃO] Getter e Setter para o ID Endereço (Agora Integer)
+    public Integer getIdEndereco() {
         return idEndereco;
     }
 
-    public void setIdEndereco(int idEndereco) {
+    public void setIdEndereco(Integer idEndereco) {
         this.idEndereco = idEndereco;
     }
     
-    // Opcional: toString() para facilitar a visualiza??o no console
+    // Opcional: toString()
     @Override
     public String toString() {
-        return "Cliente{" + "id=" + idCliente + ", nome=" + nomeRazaoSocial + ", CNPJ/CPF=" + cnpjCpf + '}';
+        return "Cliente{" + "id=" + idCliente + ", nome=" + nomeRazaoSocial + ", CNPJ/CPF=" + cnpjCpf + ", idEndereco=" + idEndereco + '}';
     }
 }

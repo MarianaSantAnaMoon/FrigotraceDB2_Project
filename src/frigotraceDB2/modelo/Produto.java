@@ -1,22 +1,21 @@
 package frigotraceDB2.modelo;
 
-import java.math.BigDecimal; // Importação necessária para o preço
-import java.util.Date;        // Importação necessária para as datas
+import java.math.BigDecimal;
+import java.util.Date;
 
 public class Produto {
 
     private Integer idProduto;
     private String tipoDeProduto;
     private String lote;
-    private BigDecimal preco; // DECIMAL(10,2) no BD -> BigDecimal no Java
-    private Float peso;       // FLOAT no BD -> Float no Java
+    private BigDecimal preco;
+    private Float peso;
     private Date dataProducao;
     private Date dataValidade;
 
-    // Construtores
-
-    // Construtor completo (usado ao BUSCAR do banco)
-    public Produto(Integer idProduto, String tipoDeProduto, String lote, BigDecimal preco, Float peso, Date dataProducao, Date dataValidade) {
+    // Construtor completo
+    public Produto(Integer idProduto, String tipoDeProduto, String lote, BigDecimal preco,
+                   Float peso, Date dataProducao, Date dataValidade) {
         this.idProduto = idProduto;
         this.tipoDeProduto = tipoDeProduto;
         this.lote = lote;
@@ -26,8 +25,9 @@ public class Produto {
         this.dataValidade = dataValidade;
     }
 
-    // Construtor sem ID (usado ao INSERIR no banco)
-    public Produto(String tipoDeProduto, String lote, BigDecimal preco, Float peso, Date dataProducao, Date dataValidade) {
+    // Construtor sem ID (para inserir)
+    public Produto(String tipoDeProduto, String lote, BigDecimal preco,
+                   Float peso, Date dataProducao, Date dataValidade) {
         this.tipoDeProduto = tipoDeProduto;
         this.lote = lote;
         this.preco = preco;
@@ -36,8 +36,11 @@ public class Produto {
         this.dataValidade = dataValidade;
     }
 
-    // Getters e Setters
+    // ? CONSTRUTOR VAZIO (RESOLVE O ERRO)
+    public Produto() {
+    }
 
+    // Getters e Setters
     public Integer getIdProduto() {
         return idProduto;
     }

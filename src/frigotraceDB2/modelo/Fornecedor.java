@@ -2,15 +2,12 @@ package frigotraceDB2.modelo;
 
 public class Fornecedor {
 
-    // Atributos privados (campos da tabela)
-    private Integer idFornecedor; // O ID pode ser null antes de ser salvo
+    private Integer idFornecedor;
     private String nomeRazaoSocial;
     private String cnpjCpf;
-    private Integer idEndereco; // Usamos Integer porque a coluna no BD permite NULL
+    private Integer idEndereco; // Agora totalmente opcional (pode ser null)
 
-    // Construtores
-
-    // Construtor completo (usado ao BUSCAR do banco)
+    // Construtor para BUSCA (com ID)
     public Fornecedor(Integer idFornecedor, String nomeRazaoSocial, String cnpjCpf, Integer idEndereco) {
         this.idFornecedor = idFornecedor;
         this.nomeRazaoSocial = nomeRazaoSocial;
@@ -18,16 +15,23 @@ public class Fornecedor {
         this.idEndereco = idEndereco;
     }
 
-    // Construtor sem ID (usado ao INSERIR no banco)
+    // Construtor para INSERÇÃO com endereço
     public Fornecedor(String nomeRazaoSocial, String cnpjCpf, Integer idEndereco) {
-        // O ID é deixado nulo (null), pois será gerado pelo banco.
         this.nomeRazaoSocial = nomeRazaoSocial;
         this.cnpjCpf = cnpjCpf;
         this.idEndereco = idEndereco;
     }
 
-    // Getters e Setters
-    
+    // Construtor para INSERÇÃO sem endereço
+    public Fornecedor(String nomeRazaoSocial, String cnpjCpf) {
+        this.nomeRazaoSocial = nomeRazaoSocial;
+        this.cnpjCpf = cnpjCpf;
+        this.idEndereco = null;
+    }
+
+    public Fornecedor() {}
+
+    // Getters e setters
     public Integer getIdFornecedor() {
         return idFornecedor;
     }
@@ -58,5 +62,11 @@ public class Fornecedor {
 
     public void setIdEndereco(Integer idEndereco) {
         this.idEndereco = idEndereco;
+    }
+
+    @Override
+    public String toString() {
+        return "Fornecedor{" + "id=" + idFornecedor + ", nome=" + nomeRazaoSocial +
+                ", CNPJ/CPF=" + cnpjCpf + ", idEndereco=" + idEndereco + '}';
     }
 }

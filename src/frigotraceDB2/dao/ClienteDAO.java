@@ -9,14 +9,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Types; // IMPORTAÇÃO NECESSÁRIA
 
 public class ClienteDAO {
 
     // C - CREATE (Inserir)
-    /* Insere um novo cliente na tabela 'cliente'.
-     * @param cliente O objeto Cliente a ser salvo.*/
     public void inserir(Cliente cliente) {
         
+        // O SQL deve incluir id_endereco, mas trataremos o valor como NULL se for 0 ou null.
         String sql = "INSERT INTO cliente (nome_razao_social, cnpj_cpf, id_endereco) VALUES (?, ?, ?)";
 
         Connection con = null;
@@ -27,8 +27,22 @@ public class ClienteDAO {
             stmt = con.prepareStatement(sql); 
 
             stmt.setString(1, cliente.getNomeRazaoSocial()); 
-            stmt.setString(2, cliente.getCnpjCpf());         
-            stmt.setInt(3, cliente.getIdEndereco());         
+            stmt.setString(2, cliente.getCnpjCpf()); 
+            
+            // =========================================================
+            // CORREÇÃO: Tratamento para NULL/0 no id_endereco
+            // =========================================================
+            Integer idEndereco = cliente.getIdEndereco(); 
+            
+            // A prioridade é checar se é NULL para evitar a NullPointerException!
+            if (idEndereco == null || idEndereco == 0) {
+                // Se for null ou 0, usa setNull para garantir o NULL no banco
+                stmt.setNull(3, Types.INTEGER); // Usa Types.INTEGER
+            } else {
+                // Caso contrário, insere o ID fornecido
+                stmt.setInt(3, idEndereco); 
+            }
+            // =========================================================
 
             stmt.executeUpdate(); 
             
@@ -68,7 +82,13 @@ public class ClienteDAO {
                 int id = rs.getInt("id_cliente");
                 String nome = rs.getString("nome_razao_social");
                 String cnpj = rs.getString("cnpj_cpf");
-                int idEnd = rs.getInt("id_endereco");
+                
+                // =========================================================
+                // CORREÇÃO: Usar getObject para tratar o NULL do banco
+                // =========================================================
+                // rs.getInt() retorna 0 para NULL. getObject() retorna NULL, o que é o desejado.
+                Integer idEnd = (Integer) rs.getObject("id_endereco");
+                // =========================================================
                 
                 // 2. Mapeia para objeto Java
                 Cliente cliente = new Cliente(nome, cnpj, idEnd); 
@@ -94,14 +114,9 @@ public class ClienteDAO {
         return listaClientes;
     }
     
-
     // U - UPDATE (Atualizar)
-    /* Atualiza um cliente existente no banco de dados.
-     * O objeto cliente deve ter um idCliente válido.
-     * @param cliente O objeto Cliente com os novos dados e o ID para o WHERE. */
     public void atualizar(Cliente cliente) {
         
-        // SQL: Atualiza os campos e usa o ID no WHERE para garantir a linha correta
         String sql = "UPDATE cliente SET nome_razao_social = ?, cnpj_cpf = ?, id_endereco = ? WHERE id_cliente = ?";
 
         Connection con = null;
@@ -113,8 +128,22 @@ public class ClienteDAO {
 
             // 1. Mapeia os NOVOS valores
             stmt.setString(1, cliente.getNomeRazaoSocial()); 
-            stmt.setString(2, cliente.getCnpjCpf());         
-            stmt.setInt(3, cliente.getIdEndereco());         
+            stmt.setString(2, cliente.getCnpjCpf()); 
+            
+            // =========================================================
+            // CORREÇÃO: Tratamento para NULL/0 no id_endereco
+            // =========================================================
+            Integer idEndereco = cliente.getIdEndereco(); 
+            
+            // A prioridade é checar se é NULL para evitar a NullPointerException!
+            if (idEndereco == null || idEndereco == 0) {
+                // Se for null ou 0, usa setNull para garantir o NULL no banco
+                stmt.setNull(3, Types.INTEGER); 
+            } else {
+                // Caso contrário, insere o ID fornecido
+                stmt.setInt(3, idEndereco); 
+            }
+            // =========================================================
             
             // 2. Mapeia o ID que será usado no WHERE
             stmt.setInt(4, cliente.getIdCliente()); // 4º '?' é o id_cliente
